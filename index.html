@@ -16,6 +16,7 @@
    - 替换 image/avatar.jpg 为你的头像
    - 修改 <h1> 标签中的名字
    - 修改 .bio 类中的个性签名
+   - 在 .skills 中添加或删除技能标签
    - 比特币地址部分可以删除或替换为其他内容
 
 4. 社交媒体配置
@@ -30,9 +31,9 @@
 6. 留言板配置
    - 如果不需要留言板功能，可以删除 .comments 相关代码
    - 要使用留言板，需要：
-     1. 保留 twikoo 相关代码
-     2. 将 envId 修改为你的部署地址
-     3. 如果不使用 twikoo，可以替换为其他评论系统
+      1. 保留 twikoo 相关代码
+      2. 将 envId 修改为你的部署地址
+      3. 如果不使用 twikoo，可以替换为其他评论系统
 
 7. 页脚配置
    - 修改版权信息
@@ -79,37 +80,27 @@
             z-index: -1;
             background: linear-gradient(135deg, #1a1a2e, #16213e, #1a1a2e);
         }
-        .container {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 20px auto;
-            max-width: 800px;
-        }
-        .comments {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-        .comments .section-title {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        #tcomment {
-            color: #333;
-        }
     </style>
 </head>
 <body>
+    <div class="theme-toggle">
+        <input type="checkbox" id="theme-toggle">
+        <label for="theme-toggle"></label>
+    </div>
     <canvas id="matrix"></canvas>
     <div class="container">
         <div class="profile">
             <img src="image/avatar.jpg" alt="头像" class="avatar">
             <h1>小吴乐意</h1>
-            <p class="bio">“未来的种子，深埋在过去。”</p>
+            <p class="bio">"未来的种子，深埋在过去。"</p>
+            <p style="color: #666; margin: 8px 0; font-size: 15px;">技术作者 | 区块链爱好者 | 独立思考者</p>
+            <div class="skills">
+                <span class="skill-tag">比特币</span>
+                <span class="skill-tag">区块链</span>
+                <span class="skill-tag">技术写作</span>
+                <span class="skill-tag">知识管理</span>
+                <span class="skill-tag">独立思考</span>
+            </div>
             <div class="btc-address" id="btc-address">
                 <span>BTC: 3KLy733p6vQDyaKdEY61iGdQPf9pYt9hPv</span>
                 <div class="qr-code btc-qr">
@@ -150,7 +141,7 @@
                 <div class="icon"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/></svg></div>
                 <div class="text">
                     <h3>哔哩哔哩</h3>
-                    <p>传说中的“B”站</p>
+                    <p>传说中的"B"站</p>
                 </div>
                 <div class="arrow">›</div>
             </a>
@@ -230,121 +221,6 @@
         </div>
     </div>
     <script src="https://cdn.staticfile.org/twikoo/1.6.31/twikoo.all.min.js"></script>
-           // envId: '这里替换自己的评论链接'
-    <script>
-        twikoo.init({
-            envId: '',
-            el: '#tcomment'
-        });
-
-        // 添加比特币地址复制功能
-        document.getElementById('btc-address').addEventListener('click', function() {
-            const btcAddress = '3KLy733p6vQDyaKdEY61iGdQPf9pYt9hPv';
-            const copySuccess = document.createElement('div');
-            copySuccess.className = 'copy-success';
-            copySuccess.textContent = '地址已复制';
-            this.appendChild(copySuccess);
-            
-            navigator.clipboard.writeText(btcAddress).then(function() {
-                copySuccess.classList.add('show');
-                setTimeout(() => {
-                    copySuccess.classList.remove('show');
-                    setTimeout(() => copySuccess.remove(), 300);
-                }, 1500);
-            }).catch(function(err) {
-                console.error('复制失败:', err);
-                copySuccess.textContent = '复制失败';
-                copySuccess.classList.add('show');
-                setTimeout(() => {
-                    copySuccess.classList.remove('show');
-                    setTimeout(() => copySuccess.remove(), 300);
-                }, 1500);
-            });
-        });
-
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const stars = [];
-        const numStars = 200;
-        const nebulas = [];
-        const numNebulas = 3;
-
-        // 创建星星
-        for (let i = 0; i < numStars; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 2,
-                speed: Math.random() * 0.5 + 0.1,
-                brightness: Math.random() * 0.3 + 0.7, // 初始化时使用随机值
-            });
-        }
-
-        // 创建星云
-        for (let i = 0; i < numNebulas; i++) {
-            nebulas.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 200 + 100,
-                hue: Math.random() * 60 + 200, // 蓝紫色系
-                opacity: Math.random() * 0.2
-            });
-        }
-
-        function drawStar(star) {
-            ctx.beginPath();
-            ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${0.3 + star.brightness * 0.7})`;
-            ctx.fill();
-        }
-
-        function drawNebula(nebula) {
-            const gradient = ctx.createRadialGradient(
-                nebula.x, nebula.y, 0,
-                nebula.x, nebula.y, nebula.size
-            );
-            gradient.addColorStop(0, `hsla(${nebula.hue}, 100%, 50%, ${nebula.opacity})`);
-            gradient.addColorStop(1, 'transparent');
-            
-            ctx.fillStyle = gradient;
-            ctx.fillRect(nebula.x - nebula.size, nebula.y - nebula.size,
-                        nebula.size * 2, nebula.size * 2);
-        }
-
-        function updateStars() {
-            stars.forEach(star => {
-                star.y -= star.speed;
-                if (star.y < -10) {
-                    star.y = canvas.height + 10;
-                    star.x = Math.random() * canvas.width;
-                }
-                star.brightness = Math.sin(Date.now() * 0.001 + star.speed * 10) * 0.3 + 0.7;
-            });
-        }
-
-        function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 15, 0.2)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            nebulas.forEach(drawNebula);
-            stars.forEach(drawStar);
-            updateStars();
-
-            requestAnimationFrame(draw);
-        }
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        draw();
-    </script>
-   // 在网站底部插入以下代码即可集成网站分析仪表板
-<script defer src="https://a.xiaowuleyi.com" data-website-id="自定义网站唯一标识"></script>
+    <script src="script.js"></script>
 </body>
 </html>

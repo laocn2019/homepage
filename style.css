@@ -4,6 +4,30 @@
     box-sizing: border-box;
 }
 
+:root {
+    --primary-color: #215b7b;
+    --secondary-color: #f7931a;
+    --text-dark: #2c3e50;
+    --text-light: #666;
+    --bg-light: #f5f7fa;
+    --bg-lighter: #e4e8eb;
+    --white: #ffffff;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] {
+    --bg-light: #1a1a2e;
+    --bg-lighter: #16213e;
+    --text-dark: #e4e8eb;
+    --text-light: #b0b0b0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 #matrix {
     position: fixed;
     top: 0;
@@ -16,9 +40,10 @@
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-lighter) 100%);
     min-height: 100vh;
     padding: 40px 20px;
+    transition: background 0.3s ease;
 }
 
 .container {
@@ -27,14 +52,20 @@ body {
     padding: 20px;
 }
 
+/* Profile Section */
 .profile {
     text-align: center;
     margin-bottom: 30px;
     padding: 30px 20px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
     backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.profile:hover {
+    transform: translateY(-2px);
 }
 
 .avatar {
@@ -44,7 +75,7 @@ body {
     margin-bottom: 20px;
     object-fit: cover;
     border: 4px solid white;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
     transition: transform 0.3s ease;
 }
 
@@ -53,17 +84,45 @@ body {
 }
 
 .profile h1 {
-    font-size: 24px;
+    font-size: 28px;
     margin-bottom: 8px;
-    color: #2c3e50;
+    color: var(--text-dark);
 }
 
 .bio {
-    color: #666;
+    color: var(--text-light);
     margin-top: 10px;
+    margin-bottom: 15px;
     font-size: 16px;
+    font-style: italic;
 }
 
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.skill-tag {
+    background: linear-gradient(135deg, rgba(33, 117, 155, 0.1), rgba(247, 147, 26, 0.1));
+    color: var(--primary-color);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(33, 117, 155, 0.3);
+}
+
+.skill-tag:hover {
+    background: linear-gradient(135deg, rgba(33, 117, 155, 0.2), rgba(247, 147, 26, 0.2));
+    transform: translateY(-2px);
+}
+
+/* Social Links */
 .social-links {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -80,11 +139,13 @@ body {
     text-decoration: none;
     transition: all 0.3s ease;
     margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
+    position: relative;
 }
 
 .social-item:hover {
     transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
 }
 
 /* Platform specific styles */
@@ -124,7 +185,7 @@ body {
 }
 
 .social-item.weibo {
-    background: linear-gradient(135deg, rgba(230, 22, 45, 0.85), rgba(230, 22, 45, 0.85));
+    background: linear-gradient(135deg, rgba(230, 22, 45, 0.95), rgba(230, 22, 45, 0.95));
     color: white;
 }
 
@@ -139,6 +200,7 @@ body {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     transition: transform 0.3s ease;
+    flex-shrink: 0;
 }
 
 .social-item:hover .icon {
@@ -166,6 +228,8 @@ body {
     color: #999;
     font-size: 24px;
     transition: transform 0.3s ease;
+    margin-left: 10px;
+    flex-shrink: 0;
 }
 
 .social-item:hover .arrow {
@@ -173,10 +237,40 @@ body {
     color: rgba(255, 255, 255, 0.9);
 }
 
+/* QR Code Display */
 #wechat-item {
     position: relative;
 }
 
+.qr-code {
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+#wechat-item:hover .qr-code {
+    opacity: 1;
+    visibility: visible;
+    right: 90px;
+}
+
+.qr-code img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+/* BTC Address */
 .btc-address {
     margin-top: 15px;
     padding: 8px 15px;
@@ -189,7 +283,7 @@ body {
 }
 
 .btc-address span {
-    color: #f7931a;
+    color: var(--secondary-color);
     font-size: 16px;
     margin-right: 2px;
 }
@@ -246,35 +340,7 @@ body {
     visibility: visible;
 }
 
-#wechat-item .qr-code {
-    position: absolute;
-    right: 70px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    .btc-qr img {
-        width: 120px;
-        height: 120px;
-        object-fit: contain;
-    }
-}
-
-#wechat-item:hover .qr-code {
-    opacity: 1;
-    visibility: visible;
-    right: 90px;
-}
-
-.weibo {
-    background: linear-gradient(135deg, rgba(230, 22, 45, 0.95), rgba(230, 22, 45, 0.95));
-}
-
+/* Projects Section */
 .projects {
     margin-top: 40px;
     padding: 20px;
@@ -285,6 +351,7 @@ body {
     color: white;
     margin-bottom: 20px;
     text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .project-grid {
@@ -301,41 +368,14 @@ body {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-decoration: none;
-}
-
-.project-image {
-    width: 100%;
-    height: 90px;
-    overflow: hidden;
-}
-
-.project-info {
-    padding: 12px;
-}
-
-.project-info h3 {
-    color: white;
-    font-size: 16px;
-    margin: 0 0 6px 0;
-}
-
-.project-info p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 13px;
-    margin: 0 0 8px 0;
-    line-height: 1.4;
-}
-
-.project-tag {
-    padding: 3px 10px;
-    background: #f0f0f0;
-    color: #666;
-    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .project-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-lg);
 }
 
 .project-image {
@@ -358,6 +398,9 @@ body {
 .project-info {
     padding: 16px;
     background: linear-gradient(135deg, rgba(33, 117, 155, 0.95), rgba(21, 92, 123, 0.95));
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .project-info h3 {
@@ -368,10 +411,11 @@ body {
 }
 
 .project-info p {
-    margin: 0;
+    margin: 0 0 12px 0;
     font-size: 14px;
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
+    flex: 1;
 }
 
 .project-tag {
@@ -383,6 +427,7 @@ body {
     font-size: 13px;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
+    align-self: flex-start;
 }
 
 .project-item:hover .project-tag {
@@ -390,6 +435,7 @@ body {
     transform: translateY(-1px);
 }
 
+/* Comments Section */
 .comments {
     margin-top: 40px;
     padding: 20px;
@@ -408,63 +454,7 @@ body {
     color: white;
 }
 
-@media screen and (max-width: 768px) {
-    .container {
-        margin: 10px;
-        padding: 15px;
-    }
-
-    .social-item {
-        padding: 12px;
-    }
-
-    .social-item .text h3 {
-        font-size: 0.9em;
-    }
-
-    .social-item .text p {
-        font-size: 0.8em;
-    }
-
-    .icon {
-        font-size: 20px;
-        width: 32px;
-        height: 32px;
-        margin-right: 12px;
-    }
-
-    .project-item {
-        padding: 12px;
-    }
-
-    .project-info h3 {
-        font-size: 0.95em;
-    }
-
-    .project-info p {
-        font-size: 0.85em;
-    }
-
-    .project-tag {
-        font-size: 0.75em;
-        padding: 3px 8px;
-    }
-
-    .bio {
-        font-size: 0.9em;
-        margin: 8px 0;
-    }
-
-    h1 {
-        font-size: 1.5em;
-    }
-
-    .section-title {
-        font-size: 1.3em;
-        margin: 15px 0;
-    }
-}
-
+/* Copyright */
 .copyright {
     text-align: center;
     padding: 20px;
@@ -474,7 +464,7 @@ body {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
 }
 
 .copyright a {
@@ -485,4 +475,239 @@ body {
 
 .copyright a:hover {
     color: #fff;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.theme-toggle input[type="checkbox"] {
+    display: none;
+}
+
+.theme-toggle label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle label:hover {
+    transform: scale(1.05);
+}
+
+.theme-toggle label::before {
+    content: "☀️";
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle input[type="checkbox"]:checked + label::before {
+    content: "🌙";
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 20px 10px;
+    }
+
+    .container {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .profile {
+        padding: 20px 15px;
+    }
+
+    .profile h1 {
+        font-size: 22px;
+    }
+
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .social-links {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .social-item {
+        padding: 12px;
+        margin-bottom: 0;
+    }
+
+    .social-item .text h3 {
+        font-size: 16px;
+    }
+
+    .social-item .text p {
+        font-size: 14px;
+    }
+
+    .icon {
+        font-size: 20px;
+        width: 32px;
+        height: 32px;
+        margin-right: 12px;
+    }
+
+    .arrow {
+        font-size: 20px;
+        margin-left: 8px;
+    }
+
+    .projects {
+        padding: 15px;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-item {
+        padding: 12px;
+    }
+
+    .project-info h3 {
+        font-size: 16px;
+    }
+
+    .project-info p {
+        font-size: 13px;
+    }
+
+    .project-tag {
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+
+    .bio {
+        font-size: 14px;
+        margin: 8px 0;
+    }
+
+    .section-title {
+        font-size: 20px;
+        margin: 15px 0;
+    }
+
+    .skills {
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .skill-tag {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+
+    .qr-code {
+        position: absolute;
+        right: 10px;
+        top: -120px;
+        transform: none;
+    }
+
+    #wechat-item:hover .qr-code {
+        right: 10px;
+    }
+
+    .theme-toggle {
+        top: 10px;
+        right: 10px;
+    }
+
+    .theme-toggle label {
+        width: 45px;
+        height: 45px;
+    }
+
+    .theme-toggle label::before {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .profile {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+    }
+
+    .profile h1 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .bio {
+        font-size: 13px;
+    }
+
+    .social-item {
+        padding: 10px;
+    }
+
+    .icon {
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+        margin-right: 10px;
+    }
+
+    .text h3 {
+        font-size: 14px;
+    }
+
+    .text p {
+        font-size: 12px;
+    }
+
+    .arrow {
+        display: none;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .project-grid {
+        gap: 10px;
+    }
+
+    .project-info {
+        padding: 12px;
+    }
+
+    .project-tag {
+        font-size: 11px;
+    }
+
+    .copyright {
+        padding: 15px;
+        font-size: 14px;
+        margin-top: 30px;
+    }
 }
